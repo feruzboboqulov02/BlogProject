@@ -1,5 +1,5 @@
-<header>
-    <a href="/" class="header__logo">NodeJS</a>
+<!-- <header>
+    <a href="/" class="header__logo">Web Developing Blog</a>
     <nav class="header__nav">
         <ul>
             <li>
@@ -18,4 +18,18 @@
             Search
         </button>
     </div>
+</header> -->
+<header class="main-header">
+  <a href="/" class="header__logo">Web Developing Blog</a>
+  <nav class="header__nav">
+    <ul>
+      <li><a href="/" class="active">Home</a></li>
+      <li><a href="/about">About</a></li>
+      <li><a href="/contact">Contact</a></li>
+    </ul>
+  </nav>
+  <form class="header__search" action="/search" method="GET">
+    <input type="text" name="q" placeholder="Search...">
+    <button type="submit">Search</button>
+  </form>
 </header>
