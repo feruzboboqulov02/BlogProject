@@ -3,6 +3,7 @@ const route = express.Router();
 const Post= require('../models/Post');
 const { sort } = require('mathjs');
 
+
 route.get('/', async (req, res) => {
 
     try {
@@ -11,7 +12,7 @@ route.get('/', async (req, res) => {
             description: 'A simple blog built with NodeJS and EJS'
         }
 
-        let perPage= 10
+        let perPage= 15
         let page = req.query.page || 1 
 
         const data = await Post.aggregate([{$sort:{createdAt:-1}}])
@@ -19,14 +20,14 @@ route.get('/', async (req, res) => {
         .limit(perPage)
         .exec();
 
-        const count = await Post.count()
+        const count = await Post.countDocuments()
         const nextPage = parseInt(page) + 1
         const hasNextPage =nextPage <= Math.ceil(count / perPage)
 
         res.render('index',{ locals,
             data,
             current:page,
-            hasNextPage: nextPage?nextPage:null
+            nextPage: nextPage?nextPage:null
          });
     }   catch (error) {
         console.log(error);
