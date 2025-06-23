@@ -12,7 +12,7 @@ route.get('/', async (req, res) => {
             description: 'A simple blog built with NodeJS and EJS'
         }
 
-        let perPage= 15
+        let perPage= 10
         let page = req.query.page || 1 
 
         const data = await Post.aggregate([{$sort:{createdAt:-1}}])
@@ -27,7 +27,7 @@ route.get('/', async (req, res) => {
         res.render('index',{ locals,
             data,
             current:page,
-            nextPage: nextPage?nextPage:null
+            nextPage: hasNextPage?nextPage:null
          });
     }   catch (error) {
         console.log(error);
@@ -57,9 +57,52 @@ module.exports = route;
 //     }
 // })
 
-// route.get('/about', (req, res) => {
-//     res.render('about');
-// })
+route.get('/post/:id', async (req, res) => {
+    try {
+        let slug = req.params.id;
+        const data = await Post.findById({_id: slug});
+
+
+        const locals={
+            title: data.title,
+            description: 'A simple blog built with NodeJS and EJS'
+        }
+
+
+        res.render('post',{ locals,data });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+route.post('/search', async (req, res) => {
+    try {
+        const locals={
+            title: "Search",
+            description: 'A simple blog built with NodeJS and EJS'
+        }
+        let searchTerm = req.body.searchTerm
+        const searchNoSpecialChar = searchTerm.replace(/[^a-zA-Z0-9 ]/g, "");
+        const data = await Post.find({
+            $or:[
+                {title:{$regex:new RegExp(searchNoSpecialChar,'i')}},
+                {body:{$regex:new RegExp(searchNoSpecialChar,'i')}}
+            ]
+        })
+        res.render('search',{ locals,data });
+    } catch (error) {
+        console.log(error);
+    }
+})
+
+
+
+
+
+
+route.get('/about', (req, res) => {
+    res.render('about');
+})
 
 
 
