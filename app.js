@@ -1,0 +1,20 @@
+require ('dotenv').config();
+const express = require('express');
+const app = express();
+const port = process.env.PORT || 3000;
+const expressLayout = require('express-ejs-layouts');
+
+app.use(express.static('public'));
+
+app.use(expressLayout)
+app.set('view engine', 'ejs');
+app.set('layout', './layouts/main');
+
+ app.get('/', require('./server/routes/main.js'));
+
+app.listen(port, () => {
+    console.log(`Server is running on http://localhost:${port}`);
+});
+
+// Export the app for testing purposes
+module.exports = app;
