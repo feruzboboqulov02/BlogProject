@@ -13,10 +13,11 @@ app.use(express.static('public'));
 app.use(expressLayout)
 app.set('view engine', 'ejs');
 app.set('layout', './layouts/main');
-app.use('/',require('./server/routes/main.js'));
 
 
-app.get('/', require('./server/routes/main.js'));
+
+app.use('/', require('./server/routes/main.js'));
+app.use('/', require('./server/routes/admin.js'));
 
 app.listen(port, () => {
     console.log(`Server is running on http://localhost:${port}`);
